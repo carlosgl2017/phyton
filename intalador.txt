@@ -1,0 +1,3 @@
+pip install pyinstaller
+#comando para compilar
+pyinstaller --clean --onefile --windowed gui.py
