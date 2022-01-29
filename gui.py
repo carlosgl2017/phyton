@@ -83,12 +83,14 @@ class Aplicacion():
            activos = json.loads(url.read().decode())
         with urllib.request.urlopen("http://10.1.0.173:8080/integrado/declaracion/ingresosfijos/"+self.etiq2.get()) as url:
            ingresosfijos = json.loads(url.read().decode())
-
+        with urllib.request.urlopen("http://10.1.0.173:8080/integrado/declaracion/ingresosvariables/"+self.etiq2.get()) as url:
+           ingresosvariables = json.loads(url.read().decode())
         with urllib.request.urlopen("http://10.1.0.173:8080/integrado/declaracion/pasivos/"+self.etiq2.get()) as url:
            pasivos = json.loads(url.read().decode())
-
         with urllib.request.urlopen("http://10.1.0.173:8080/integrado/declaracion/gastosfijos/"+self.etiq2.get()) as url:
            gastosfijos = json.loads(url.read().decode())
+        with urllib.request.urlopen("http://10.1.0.173:8080/integrado/declaracion/gastosvariables/"+self.etiq2.get()) as url:
+           gastosvariables = json.loads(url.read().decode())
 
         #localendpoints
         # print(data[0]['nombre'])
@@ -120,36 +122,46 @@ class Aplicacion():
         #sheet['AB19'] = data[0]['antiguedad']
         sheet['K17'] = data[0]['tipo_vivienda']
         sheet['K19'] = data[0]['nit']
-        sheet['AE59'] = data[0]['gbdaccand']
-        sheet['F59'] = data[0]['gbdacmail']
-        sheet['G88'] = data[0]['gbdacrefp']
+        sheet['AE65'] = data[0]['gbdaccand']
+        sheet['F65'] = data[0]['gbdacmail']
+        sheet['G94'] = data[0]['gbdacrefp']
         sheet['K26'] = data[0]['gbdacrefo']
         #activos
         if len(activos)!=0:
             for i in range (0,len(activos)):
                 sheet[f'A{43+i}']=activos[i]['concepto']
                 sheet[f'P{43+i}']=activos[i]['valor']
-        #ingresos
+        #pasivos
         if len(pasivos)!=0:
             for i in range (0,len(pasivos)):
-                sheet[f'A{54+i}']=pasivos[i]['concepto']
-                sheet[f'P{54+i}']=pasivos[i]['valor']
+                sheet[f'A{59+i}']=pasivos[i]['concepto']
+                sheet[f'P{59+i}']=pasivos[i]['valor']
+        #ingreses
         if len(ingresosfijos)!=0:
             for i in range (0,len(ingresosfijos)):
                 sheet[f'W{43+i}']=ingresosfijos[i]['concepto']
                 sheet[f'AN{43+i}']=ingresosfijos[i]['valor']
+        if len(ingresosvariables)!=0:
+            for i in range (0,len(ingresosvariables)):
+                sheet[f'W{48+i}']=ingresosvariables[i]['concepto']
+                sheet[f'AN{48+i}']=ingresosvariables[i]['valor']
+        #gastos fijos
         if len(gastosfijos)!=0:
             for i in range (0,len(gastosfijos)):
-                sheet[f'W{50+i}']=gastosfijos[i]['concepto']
-                sheet[f'AN{50+i}']=gastosfijos[i]['valor']
+                sheet[f'W{55+i}']=gastosfijos[i]['concepto']
+                sheet[f'AN{55+i}']=gastosfijos[i]['valor']
+        if len(gastosvariables)!=0:
+            for i in range (0,len(gastosvariables)):
+                sheet[f'W{59+i}']=gastosvariables[i]['concepto']
+                sheet[f'AN{59+i}']=gastosvariables[i]['valor']
  
         #totales
         if len(declaracion)!=0:
-            sheet['P52'] = declaracion[0]['t_activos']
-            sheet['P57'] = declaracion[0]['t_pasivos']
-            sheet['P58'] = declaracion[0]['t_patrimonio']
-            sheet['AN48'] = declaracion[0]['t_ingresosfijos']
-            sheet['AN57'] = declaracion[0]['t_gastosfijos']
+            sheet['P57'] = declaracion[0]['t_activos']
+            sheet['P63'] = declaracion[0]['t_pasivos']
+            sheet['P64'] = declaracion[0]['t_patrimonio']
+            sheet['AN53'] = declaracion[0]['t_ingresosfijos']+declaracion[0]['t_ingresosvariables']
+            sheet['AN63'] = declaracion[0]['t_gastosfijos']+declaracion[0]['t_gastosvariables']
         
         booleano=data[0]['antiguedad']
         
